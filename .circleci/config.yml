@@ -2,7 +2,24 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php
+      - image: framgia/laravel-workspace
     steps:
       - checkout
-      - run: echo "A first hello"
+      - run: cp .env.example .env
+      # composer cache
+      - restore_cache:
+          keys:
+            - vendor-v1-{{ checksum "composer.lock" }}
+      - run:  composer install
+      - save_cache:
+          key: vendor-v1-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
+      # run test
+      - run: php artisan key:generate
+      - run:
+          name: Check convention PHP
+          command: phpcs --standard=Framgia app
+      - run:
+          name: Check eslint
+          command: yarn run eslint
