@@ -36,12 +36,12 @@ jobs:
               curl -X POST -H "X-ChatWorkToken: $CHATWORK_TOKEN" -d \
                 "body=
                 TO ALL >>>[info][title]$CIRCLE_PROJECT_REPONAME: Success![/title]
-                Repository name: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-                Author: $CIRCLE_USERNAME
-                Branch: $CIRCLE_BRANCH
-                Commit/pull request link: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
-                Build link: https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
-                [/info]
+              Repository name: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+              Author: $CIRCLE_USERNAME
+              Branch: $CIRCLE_BRANCH
+              Commit/pull request link: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
+              Build link: https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
+                  [/info]
                 " \
                 "https://api.chatwork.com/v2/rooms/$CHATWORK_ROOM/messages"
             fi
@@ -54,18 +54,18 @@ jobs:
               curl -X POST -H "X-ChatWorkToken: $CHATWORK_TOKEN" -d \
                 "body=
                 TO ALL >>>[info][title]$CIRCLE_PROJECT_REPONAME: Fail![/title]
-                Repository name: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-                Author: $CIRCLE_USERNAME
-                Branch: $CIRCLE_BRANCH
-                Commit/pull request link: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
-                Build link: https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
+              Repository name: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+              Author: $CIRCLE_USERNAME
+              Branch: $CIRCLE_BRANCH
+              Commit/pull request link: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
+              Build link: https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
                 [/info]
                 " \
                 "https://api.chatwork.com/v2/rooms/$CHATWORK_ROOM/messages"
             fi
   deploy:
     docker:
-      - image: framgiaciteam/deb-deploy:7.3
+      - image: framgiaciteam/deb-deploy
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -82,7 +82,8 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build
+      - build:
+
       - deploy:
           requires:
             - build
